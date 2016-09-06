@@ -2,7 +2,7 @@ module Agents
   class DktDocumentClassificationAgent < Agent
     include FormConfigurable
     include WebRequestConcern
-    include NifApiAgentConcern
+    include DktNifApiAgentConcern
 
     default_schedule 'never'
 

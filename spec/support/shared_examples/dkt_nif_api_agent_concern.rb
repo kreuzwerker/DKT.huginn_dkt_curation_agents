@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-shared_examples_for NifApiAgentConcern do
+shared_examples_for DktNifApiAgentConcern do
   it "event description does not throw an exception" do
     expect(@checker.event_description).to include('body')
   end

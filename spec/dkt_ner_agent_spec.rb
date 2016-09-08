@@ -36,7 +36,7 @@ describe Agents::DktNerAgent do
   describe '#complete_models' do
     it 'fetches the availble models for the configured mode' do
        stub_request(:get, "http://some.endpoint.com/api/e-nlp/listModels?analysis=ner").
-         with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip,deflate', 'User-Agent'=>'Huginn - https://github.com/cantino/huginn', 'X-Auth-Token'=>''}).
+         with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip,deflate', 'User-Agent'=>'Huginn - https://github.com/cantino/huginn'}).
          to_return(:status => 200, :body => "model1\nmodel2", :headers => {})
       @checker.options['analysis'] = 'ner'
       expect(@checker.complete_models).to eq([{:text=>"model1", :id=>"model1"}, {:text=>"model2", :id=>"model2"}])

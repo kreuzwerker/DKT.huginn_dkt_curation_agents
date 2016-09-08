@@ -36,7 +36,7 @@ describe Agents::DktClusteringAgent do
     it "creates an event after a successfull request" do
        stub_request(:post, "http://some.endpoint.com/?algorithm=EM&language=en").
          with(:body => "Hello from Huginn",
-              :headers => {'Accept-Encoding'=>'gzip,deflate', 'Content-Type'=>'text/plain', 'User-Agent'=>'Huginn - https://github.com/cantino/huginn', 'X-Auth-Token'=>''}).
+              :headers => {'Accept-Encoding'=>'gzip,deflate', 'Content-Type'=>'text/plain', 'User-Agent'=>'Huginn - https://github.com/cantino/huginn'}).
          to_return(:status => 200, :body => '{"many": "clusters"}', :headers => {})
       expect { @checker.receive([@event]) }.to change(Event, :count).by(1)
       event = Event.last

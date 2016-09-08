@@ -58,7 +58,7 @@ module Agents
     end
 
     def complete_models
-      response = faraday.get(URI.join(interpolated['url'], '/api/e-nlp/listModels'), {analysis: interpolated['analysis']}, auth_header.merge({ 'Accept' => 'application/json'}))
+      response = faraday.get(URI.join(interpolated['url'], '/api/e-nlp/listModels'), {analysis: interpolated['analysis']}, {'Accept' => 'application/json'})
       return [] if response.status != 200
 
       response.body.split("\n").map { |model| { text: model, id: model } }

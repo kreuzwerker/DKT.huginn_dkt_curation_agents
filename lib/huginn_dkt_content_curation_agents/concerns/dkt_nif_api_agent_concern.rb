@@ -38,7 +38,7 @@ module DktNifApiAgentConcern
     { 'X-Auth-Token' => (mo || interpolated)['auth_token'] }
   end
 
-  def nif_request!(mo, configuration_keys, url)
+  def nif_request!(mo, configuration_keys, url, options = {})
     headers = auth_header(mo).merge({
       'Content-Type' => mo['body_format']
     })
@@ -53,6 +53,14 @@ module DktNifApiAgentConcern
     response = faraday.run_request(:post, url, mo['body'], headers) do |request|
       request.params.update(params)
     end
-    create_event payload: { body: response.body, headers: response.headers, status: response.status }
+
+    body = case options[:parse_response]
+           when :json
+             JSON.parse(response.body)
+           else
+             response.body
+           end
+
+    create_event payload: { body: body, headers: response.headers, status: response.status }
   end
 end

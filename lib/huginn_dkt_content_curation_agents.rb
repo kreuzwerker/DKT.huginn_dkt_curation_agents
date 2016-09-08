@@ -4,3 +4,4 @@ HuginnAgent.load 'huginn_dkt_content_curation_agents/concerns/dkt_nif_api_agent_
 HuginnAgent.register 'huginn_dkt_content_curation_agents/dkt_document_classification_agent'
 HuginnAgent.register 'huginn_dkt_content_curation_agents/dkt_ner_agent'
 HuginnAgent.register 'huginn_dkt_content_curation_agents/dkt_topic_modelling_agent'
+HuginnAgent.register 'huginn_dkt_content_curation_agents/dkt_clustering_agent'

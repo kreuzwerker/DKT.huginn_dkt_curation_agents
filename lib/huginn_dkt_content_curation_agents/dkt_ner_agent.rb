@@ -9,7 +9,7 @@ module Agents
     description <<-MD
       The `DktNerAgent` (DKT Named Entity Recognition) enriches text content with entities gathered from various datasets using the DKT API.
 
-      The Agent accepts all configuration options of the `/e-nlp/namedEntityRecognition` endpoint as of march 2016, have a look at the [offical documentation](https://github.com/dkt-projekt/e-OpenNLP/tree/master-architecture-update#named-entity-recognition) if you need additional information
+      The Agent accepts all configuration options of the `/e-nlp/namedEntityRecognition` endpoint as of september 2016, have a look at the [offical documentation](https://github.com/dkt-projekt/e-NLP#named-entity-recognition) if you need additional information
 
       All Agent configuration options are interpolated using [Liquid](https://github.com/cantino/huginn/wiki/Formatting-Events-using-Liquid) in the context of the received event.
 
@@ -25,27 +25,9 @@ module Agents
 
       `analysis`: The type of analysis to perform. Specify `ner` for performing NER based on a trained model. Specify `dict` to perform NER based on an uploaded dictionary. Specify `temp` to perform NER for temporal expressions.
 
-      `link`: When set to `false` the look up of found entities on DBPedia to retrieve the corresponding DBPedia URI will be skipped.
+      `mode`: Works for the `ner` analysis only. Possible values are spot (for entity spotting only), link (for entity linking only, e.g. looking up the entity label on DBPedia to retrieve a URI) or all (for both).
 
-      `models`: Specify a semicolon separated list of the models to be used for performing the analysis. The model has to be trained first.
-
-      Current list of available models for `ner analysis:
-
-          ner-de_aij-wikinerTrain_LOC
-          ner-de_aij-wikinerTrain_ORG
-          ner-de_aij-wikinerTrain_PER
-          ner-wikinerEn_LOC
-          ner-wikinerEn_ORG
-          ner-wikinerEn_PER
-
-      Current list of available models for `dict` analysis:
-
-          testDummyDict_PER
-
-      Current list of available models for `temp` analysis:
-
-          germanDates (if language is `de`)
-          englishDates (if language is `en`)
+      `models`: Specify the model to be used for performing the analysis. Use 'manual input' to specify multiple models in a comma separated list.
     MD
 
     def default_options
@@ -55,7 +37,7 @@ module Agents
         'body_format' => 'text/plain',
         'outformat' => 'turtle',
         'language' => 'en',
-        'link' => 'true'
+        'mode' => 'all'
       }
     end
 
@@ -65,8 +47,8 @@ module Agents
     form_configurable :outformat, type: :array, values: ['turtle', 'json-ld', 'n3', 'n-triples', 'rdf-xml', 'text/html']
     form_configurable :language, type: :array, values: ['en','de']
     form_configurable :analysis, type: :array, values: ['ner', 'dict', 'temp']
-    form_configurable :link, type: :boolean
-    form_configurable :models
+    form_configurable :mode, type: :array, values: ['all', 'spot', 'link']
+    form_configurable :models, roles: :completable, cache_response: false
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -75,12 +57,18 @@ module Agents
       validate_web_request_options!
     end
 
+    def complete_models
+      response = faraday.get(URI.join(interpolated['url'], '/api/e-nlp/listModels'), {analysis: interpolated['analysis']}, auth_header.merge({ 'Accept' => 'application/json'}))
+      return [] if response.status != 200
+
+      response.body.split("\n").map { |model| { text: model, id: model } }
+    end
+
     def receive(incoming_events)
       incoming_events.each do |event|
         mo = interpolated(event)
-        mo['link'] = 'no' if mo.delete('link') == 'false'
 
-        nif_request!(mo, ['outformat', 'language', 'analysis', 'models', 'link'], mo['url'])
+        nif_request!(mo, ['outformat', 'language', 'analysis', 'models', 'mode'], mo['url'])
       end
     end
   end

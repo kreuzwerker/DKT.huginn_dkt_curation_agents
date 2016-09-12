@@ -7,3 +7,4 @@ HuginnAgent.register 'huginn_dkt_content_curation_agents/dkt_topic_modelling_age
 HuginnAgent.register 'huginn_dkt_content_curation_agents/dkt_clustering_agent'
 HuginnAgent.register 'huginn_dkt_content_curation_agents/dkt_smt_agent'
 HuginnAgent.register 'huginn_dkt_content_curation_agents/dkt_logging_agent'
+HuginnAgent.register 'huginn_dkt_content_curation_agents/dkt_sesame_store_agent'

@@ -1,4 +1,4 @@
-# DktContentCurationAgents [![Build Status](https://travis-ci.org/kreuzwerker/DKT.huginn_dkt_content_curation_agents.svg?branch=master)](https://travis-ci.org/kreuzwerker/DKT.huginn_dkt_content_curation_agents)
+# DktContentCurationAgents [![Build Status](https://travis-ci.org/kreuzwerker/DKT.huginn_dkt_curation_agents.svg?branch=master)](https://travis-ci.org/kreuzwerker/DKT.huginn_dkt_curation_agents)
 
 This gem contains Huginn Agents to consume the [DKT](https://github.com/dkt-projekt/) natural language processing APIs. The Agent names are prefixed with `DKT`, look at the Agent description in Huginn for usage information.
 
@@ -7,9 +7,9 @@ This gem contains Huginn Agents to consume the [DKT](https://github.com/dkt-proj
 Add this string to your Huginn's .env `ADDITIONAL_GEMS` configuration:
 
 ```ruby
-huginn_dkt_content_curation_agents(github: kreuzwerker/DKT.huginn_dkt_content_curation_agents)
+huginn_dkt_curation_agents(github: kreuzwerker/DKT.huginn_dkt_curation_agents)
 # when only using this agent gem it should look like hits:
-ADDITIONAL_GEMS=huginn_dkt_content_curation_agents(github: kreuzwerker/DKT.huginn_dkt_content_curation_agents)
+ADDITIONAL_GEMS=huginn_dkt_curation_agents(github: kreuzwerker/DKT.huginn_dkt_curation_agents)
 ```
 
 And then execute:
@@ -32,7 +32,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-1. Fork it ( https://github.com/kreuzwerker/DKT.huginn_dkt_content_curation_agents/fork )
+1. Fork it ( https://github.com/kreuzwerker/DKT.huginn_dkt_curation_agents/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)

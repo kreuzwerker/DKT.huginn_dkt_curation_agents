@@ -3,13 +3,13 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name          = "huginn_dkt_content_curation_agents"
+  spec.name          = "huginn_dkt_curation_agents"
   spec.version       = '0.1'
   spec.authors       = ["Dominik Sander"]
   spec.email         = ["git@dsander.de"]
 
   spec.summary       = %q{Agents for doing natural language processing use the DKT APIs.}
-  spec.homepage      = "https://github.com/kreuzwerker/DKT.huginn_dkt_content_curation_agents"
+  spec.homepage      = "https://github.com/kreuzwerker/DKT.huginn_dkt_curation_agents"
   spec.license       = "Apache License 2.0"
 
 

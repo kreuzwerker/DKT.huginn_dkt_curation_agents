@@ -7,9 +7,9 @@ This gem contains Huginn Agents to consume the [DKT](https://github.com/dkt-proj
 Add this string to your Huginn's .env `ADDITIONAL_GEMS` configuration:
 
 ```ruby
-huginn_dkt_content_curation_agents(github: kreuzwerker/DKT.huginn_dkt_curation_agents)
+huginn_dkt_curation_agents(github: kreuzwerker/DKT.huginn_dkt_curation_agents)
 # when only using this agent gem it should look like hits:
-ADDITIONAL_GEMS=huginn_dkt_content_curation_agents(github: kreuzwerker/DKT.huginn_dkt_curation_agents)
+ADDITIONAL_GEMS=huginn_dkt_curation_agents(github: kreuzwerker/DKT.huginn_dkt_curation_agents)
 ```
 
 And then execute:

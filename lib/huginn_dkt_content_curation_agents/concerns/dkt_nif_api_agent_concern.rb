@@ -31,14 +31,14 @@ module DktNifApiAgentConcern
   def nif_request!(mo, configuration_keys, url, options = {})
     headers = {
       'Content-Type' => mo['body_format']
-    }
+    }.merge(options[:headers] || {})
 
     params = {}
     configuration_keys.each do |param|
       params[param.gsub('_', '-')] = mo[param] if mo[param].present?
     end
 
-    response = faraday.run_request(:post, url, mo['body'], headers) do |request|
+    response = faraday.run_request(options.fetch(:method, :post), url, mo['body'], headers) do |request|
       request.params.update(params)
     end
 

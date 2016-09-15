@@ -56,7 +56,7 @@ module Agents
       incoming_events.each do |event|
         mo = interpolated(event)
         if io = get_io(event)
-          mo['fileName']     = File.basename(io.path) if mo['fileName'].blank?
+          mo['fileName']     = File.basename(event.payload['file_pointer']['file']) if mo['fileName'].blank?
           mo['content_type'] = MIME::Types.type_for(mo['fileName']).first.try(:content_type) if mo['content_type'].blank?
           mo['body']         = io
 

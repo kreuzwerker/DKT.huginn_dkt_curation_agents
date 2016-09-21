@@ -42,5 +42,19 @@ describe Agents::DktClusteringAgent do
       event = Event.last
       expect(event.payload['body']).to eq({'many' => 'clusters'})
     end
+
+    it 'handles a incoming file pointer' do
+       stub_request(:post, "http://some.endpoint.com/?algorithm=EM&language=en").
+         with(:body => "testdata",
+              :headers => {'Accept-Encoding'=>'gzip,deflate', 'Content-Type'=>'text/plain', 'User-Agent'=>'Huginn - https://github.com/cantino/huginn'}).
+         to_return(:status => 200, :body => '{"many": "clusters"}', :headers => {})
+      event = Event.new(payload: {file_pointer: {agent_id: 111, file: 'test'}})
+      io_mock = mock()
+      mock(@checker).get_io(event) { StringIO.new("testdata") }
+
+      expect { @checker.receive([event]) }.to change(Event, :count).by(1)
+      event = Event.last
+      expect(event.payload['body']).to eq({'many' => 'clusters'})
+    end
   end
 end

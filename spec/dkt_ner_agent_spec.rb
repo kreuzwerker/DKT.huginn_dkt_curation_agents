@@ -33,16 +33,27 @@ describe Agents::DktNerAgent do
     end
   end
 
+  describe '#complete_models' do
+    it 'fetches the availble models for the configured mode' do
+       stub_request(:get, "http://some.endpoint.com/api/e-nlp/listModels?analysis=ner").
+         with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip,deflate', 'User-Agent'=>'Huginn - https://github.com/cantino/huginn'}).
+         to_return(:status => 200, :body => "model1\nmodel2", :headers => {})
+      @checker.options['analysis'] = 'ner'
+      expect(@checker.complete_models).to eq([{:text=>"model1", :id=>"model1"}, {:text=>"model2", :id=>"model2"}])
+    end
+  end
+
   describe "#receive" do
     before(:each) do
       @event = Event.new(payload: {data: "Hello from Huginn"})
       @checker.options['models'] = 'testmodel'
       @checker.options['language'] = 'en'
       @checker.options['analysis'] = 'temp'
+      @checker.options['mode'] = 'all'
     end
 
     it "creates an event after a successfull request" do
-      stub_request(:post, "http://some.endpoint.com?analysis=temp&language=en&models=testmodel&outformat=turtle").
+      stub_request(:post, "http://some.endpoint.com/?analysis=temp&language=en&mode=all&models=testmodel&outformat=turtle").
          with(:body => "Hello from Huginn",
               :headers => {'Accept-Encoding'=>'gzip,deflate', 'Content-Type'=>'text/plain', 'User-Agent'=>'Huginn - https://github.com/cantino/huginn'}).
          to_return(:status => 200, :body => "DATA", :headers => {})

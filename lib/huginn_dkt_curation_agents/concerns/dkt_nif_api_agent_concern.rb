@@ -26,33 +26,29 @@ module DktNifApiAgentConcern
     receive([Event.new])
   end
 
-  module ClassMethods
-    def freme_auth_token_description
-      "`auth_token` can be set to access private filters, datasets, templates or pipelines (depending on the agent)."
-    end
-  end
-
   private
 
-  def auth_header(mo = nil)
-    { 'X-Auth-Token' => (mo || interpolated)['auth_token'] }
-  end
-
-  def nif_request!(mo, configuration_keys, url)
-    headers = auth_header(mo).merge({
+  def nif_request!(mo, configuration_keys, url, options = {})
+    headers = {
       'Content-Type' => mo['body_format']
-    })
-
-    configuration_keys << 'filter' if defined?(FremeFilterable) && self.class.include?(FremeFilterable)
+    }.merge(options[:headers] || {})
 
     params = {}
     configuration_keys.each do |param|
       params[param.gsub('_', '-')] = mo[param] if mo[param].present?
     end
 
-    response = faraday.run_request(:post, url, mo['body'], headers) do |request|
+    response = faraday.run_request(options.fetch(:method, :post), url, mo['body'], headers) do |request|
       request.params.update(params)
     end
-    create_event payload: { body: response.body, headers: response.headers, status: response.status }
+
+    body = case options[:parse_response]
+           when :json
+             JSON.parse(response.body)
+           else
+             response.body
+           end
+
+    create_event payload: { body: body, headers: response.headers, status: response.status }
   end
 end

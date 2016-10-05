@@ -36,6 +36,8 @@ module Agents
       `errorType`: the type of the error has not been defined for now, but it can be something like: BadRequestException, EmptyInputArgument, etc.
 
       `additionalInformation`: additional text associated with the interaction.
+
+      `merge` set to true to retain the received payload and update it with the extracted result
     MD
 
     def default_options
@@ -58,6 +60,7 @@ module Agents
     form_configurable :errorId
     form_configurable :errorType
     form_configurable :additionalInformation
+    form_configurable :merge, type: :boolean
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -73,7 +76,9 @@ module Agents
           request.params.update(mo.except('url'))
         end
 
-        create_event payload: { body: response.body, headers: response.headers, status: response.status }
+        original_payload = boolify(mo['merge']) ? event.payload : {}
+
+        create_event payload: original_payload.merge(body: response.body, headers: response.headers, status: response.status)
       end
     end
   end

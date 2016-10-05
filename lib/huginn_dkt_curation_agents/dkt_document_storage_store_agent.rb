@@ -25,6 +25,8 @@ module Agents
 
         `file_name` Name of the file uploaded.
 
+        `merge` set to true to retain the received payload and update it with the extracted result
+
         **When receiving a file pointer:**
 
         `content_type` and `file_name` can optionally be used to override the file name and content-type of the received file.
@@ -45,6 +47,7 @@ module Agents
     form_configurable :collection_name
     form_configurable :fileName
     form_configurable :content_type
+    form_configurable :merge, type: :boolean
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -63,10 +66,10 @@ module Agents
           logger.warn('No content-type has been set.') if mo['content_type'].blank?
           mo['body_format'] = mo.delete('content_type') || 'text/plain'
 
-          nif_request!(mo, [], mo['url'] + "/#{mo['collection_name']}?fileName=#{CGI.escape(mo['fileName'])}", headers: {'Transfer-Encoding' => 'chunked'})
+          nif_request!(mo, [], mo['url'] + "/#{mo['collection_name']}?fileName=#{CGI.escape(mo['fileName'])}", headers: {'Transfer-Encoding' => 'chunked'}, event: event)
         else
           mo['body_format'] = mo.delete('content_type') || 'text/plain'
-          nif_request!(mo, ['fileName', 'file'], mo['url'] + "/#{mo['collection_name']}")
+          nif_request!(mo, ['fileName', 'file'], mo['url'] + "/#{mo['collection_name']}", event: event)
         end
       end
     end

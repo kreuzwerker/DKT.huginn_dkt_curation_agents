@@ -28,6 +28,8 @@ module Agents
       `mode`: Works for the `ner` analysis only. Possible values are spot (for entity spotting only), link (for entity linking only, e.g. looking up the entity label on DBPedia to retrieve a URI) or all (for both).
 
       `models`: Specify the model to be used for performing the analysis. Use 'manual input' to specify multiple models in a comma separated list.
+
+      `merge` set to true to retain the received payload and update it with the extracted result
     MD
 
     def default_options
@@ -49,6 +51,7 @@ module Agents
     form_configurable :analysis, type: :array, values: ['ner', 'dict', 'temp']
     form_configurable :mode, type: :array, values: ['all', 'spot', 'link']
     form_configurable :models, roles: :completable, cache_response: false
+    form_configurable :merge, type: :boolean
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -68,7 +71,7 @@ module Agents
       incoming_events.each do |event|
         mo = interpolated(event)
 
-        nif_request!(mo, ['outformat', 'language', 'analysis', 'models', 'mode'], mo['url'])
+        nif_request!(mo, ['outformat', 'language', 'analysis', 'models', 'mode'], mo['url'], event: event)
       end
     end
   end

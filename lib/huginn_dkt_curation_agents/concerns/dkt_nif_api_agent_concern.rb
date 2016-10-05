@@ -49,6 +49,8 @@ module DktNifApiAgentConcern
              response.body
            end
 
-    create_event payload: { body: body, headers: response.headers, status: response.status }
+    original_payload = boolify(mo['merge']) ? options[:event].payload : {}
+
+    create_event payload: original_payload.merge(body: body, headers: response.headers, status: response.status)
   end
 end

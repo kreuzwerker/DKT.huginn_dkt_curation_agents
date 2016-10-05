@@ -18,6 +18,8 @@ module Agents
       `collection_name` Name of the collection.
 
       `mode`:`documents` returns all documents of the collection, `status` returns the status of the collection
+
+      `merge` set to true to retain the received payload and update it with the extracted result
     MD
 
     def default_options
@@ -30,6 +32,7 @@ module Agents
     form_configurable :url
     form_configurable :collection_name
     form_configurable :mode, type: :array, values: ['documents', 'status']
+    form_configurable :merge, type: :boolean
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -42,7 +45,7 @@ module Agents
         mo = interpolated(event)
 
         mo['body_format'] = mo.delete('content_type') || 'text/plain'
-        nif_request!(mo, [], mo['url'] + "/#{mo['collection_name']}/#{mo['mode']}", parse_response: :json, method: :get)
+        nif_request!(mo, [], mo['url'] + "/#{mo['collection_name']}/#{mo['mode']}", parse_response: :json, method: :get, event: event)
       end
     end
   end

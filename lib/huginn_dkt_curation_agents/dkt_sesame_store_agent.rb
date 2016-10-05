@@ -23,6 +23,8 @@ module Agents
 
       `inputDataFormat`: parameter that specifies the format in which the information is provided to the service. It can have three different values: `body`, or `triple`.
 
+      `merge` set to true to retain the received payload and update it with the extracted result
+
       **If the `inputDataFormat` is `body`:**
 
       `body` use [Liquid](https://github.com/cantino/huginn/wiki/Formatting-Events-using-Liquid) templating to specify the data to be send to the API.
@@ -59,6 +61,7 @@ module Agents
     form_configurable :subject
     form_configurable :predicate
     form_configurable :object
+    form_configurable :merge, type: :boolean
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -79,7 +82,7 @@ module Agents
           ['storageName', 'storagePath', 'storageCreate', 'inputDataFormat', 'inputDataMimeType', 'subject', 'predicate', 'object']
         end
 
-        nif_request!(mo, keys, mo['url'])
+        nif_request!(mo, keys, mo['url'], event: event)
       end
     end
   end

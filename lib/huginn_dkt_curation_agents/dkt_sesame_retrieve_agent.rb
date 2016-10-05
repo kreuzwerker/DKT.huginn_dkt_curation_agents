@@ -21,6 +21,8 @@ module Agents
 
       `inputDataType`: parameter that specifies the format in which the query is provided to the service. It can have four different values: `NIF`, `entity`, `sparql` or `triple`.
 
+      `merge` set to true to retain the received payload and update it with the extracted result
+
       **If the `inputDataType` is `NIF`, `entity` or `sparql`:**
 
       `input`: use [Liquid](https://github.com/cantino/huginn/wiki/Formatting-Events-using-Liquid) templating to specify the data to be send to the API.
@@ -56,6 +58,7 @@ module Agents
     form_configurable :predicate
     form_configurable :object
     form_configurable :outformat, type: :array, values: ['text/turtle', 'application/json-ld', 'application/rdf-xml', 'text/html']
+    form_configurable :merge, type: :boolean
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -73,7 +76,7 @@ module Agents
           ['storageName', 'storagePath', 'inputDataFormat', 'input']
         end
 
-        nif_request!(mo, keys, mo['url'])
+        nif_request!(mo, keys, mo['url'], event: event)
       end
     end
   end

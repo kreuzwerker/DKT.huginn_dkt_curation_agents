@@ -29,7 +29,7 @@ module Agents
 
       `models`: Specify the model to be used for performing the analysis. Use 'manual input' to specify multiple models in a comma separated list.
 
-      `merge` set to true to retain the received payload and update it with the extracted result
+      #{common_nif_agent_fields_description}
     MD
 
     def default_options
@@ -51,7 +51,7 @@ module Agents
     form_configurable :analysis, type: :array, values: ['ner', 'dict', 'temp']
     form_configurable :mode, type: :array, values: ['all', 'spot', 'link']
     form_configurable :models, roles: :completable, cache_response: false
-    form_configurable :merge, type: :boolean
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?

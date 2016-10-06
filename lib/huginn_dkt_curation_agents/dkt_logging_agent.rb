@@ -37,7 +37,7 @@ module Agents
 
       `additionalInformation`: additional text associated with the interaction.
 
-      `merge` set to true to retain the received payload and update it with the extracted result
+      #{common_nif_agent_fields_description}
     MD
 
     def default_options
@@ -60,7 +60,7 @@ module Agents
     form_configurable :errorId
     form_configurable :errorType
     form_configurable :additionalInformation
-    form_configurable :merge, type: :boolean
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -76,9 +76,7 @@ module Agents
           request.params.update(mo.except('url'))
         end
 
-        original_payload = boolify(mo['merge']) ? event.payload : {}
-
-        create_event payload: original_payload.merge(body: response.body, headers: response.headers, status: response.status)
+        create_nif_event!(mo, event, body: response.body, headers: response.headers, status: response.status)
       end
     end
   end

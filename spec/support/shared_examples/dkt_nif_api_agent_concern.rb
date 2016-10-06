@@ -44,4 +44,27 @@ shared_examples_for DktNifApiAgentConcern do
       expect(event.payload[:some]).to eq('data')
     end
   end
+
+  context 'result_key' do
+    let(:event) { Event.new }
+
+    before do
+      stub_request(:any, //).
+         to_return(:status => 200, :body => '{"some": "json"}', :headers => {})
+    end
+
+    it 'emits the data in the payload root when not result_key is set' do
+      expect { @checker.receive([event]) }.to change(Event, :count).by(1)
+      event = Event.last
+      expect(event.payload[:body]).not_to be_nil
+    end
+
+    it 'nests the data inside result_key when it is set' do
+      @checker.options['result_key'] = 'data'
+      expect { @checker.receive([event]) }.to change(Event, :count).by(1)
+      event = Event.last
+      expect(event.payload[:body]).to be_nil
+      expect(event.payload[:data]).not_to be_nil
+    end
+  end
 end

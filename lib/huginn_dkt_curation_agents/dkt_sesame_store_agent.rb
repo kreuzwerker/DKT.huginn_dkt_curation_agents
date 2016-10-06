@@ -23,7 +23,7 @@ module Agents
 
       `inputDataFormat`: parameter that specifies the format in which the information is provided to the service. It can have three different values: `body`, or `triple`.
 
-      `merge` set to true to retain the received payload and update it with the extracted result
+      #{common_nif_agent_fields_description}
 
       **If the `inputDataFormat` is `body`:**
 
@@ -61,7 +61,7 @@ module Agents
     form_configurable :subject
     form_configurable :predicate
     form_configurable :object
-    form_configurable :merge, type: :boolean
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?

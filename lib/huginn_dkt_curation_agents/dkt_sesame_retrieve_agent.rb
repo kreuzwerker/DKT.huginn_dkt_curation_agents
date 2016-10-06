@@ -21,7 +21,7 @@ module Agents
 
       `inputDataType`: parameter that specifies the format in which the query is provided to the service. It can have four different values: `NIF`, `entity`, `sparql` or `triple`.
 
-      `merge` set to true to retain the received payload and update it with the extracted result
+      #{common_nif_agent_fields_description}
 
       **If the `inputDataType` is `NIF`, `entity` or `sparql`:**
 
@@ -58,7 +58,7 @@ module Agents
     form_configurable :predicate
     form_configurable :object
     form_configurable :outformat, type: :array, values: ['text/turtle', 'application/json-ld', 'application/rdf-xml', 'text/html']
-    form_configurable :merge, type: :boolean
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?

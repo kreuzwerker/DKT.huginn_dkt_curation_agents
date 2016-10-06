@@ -19,7 +19,7 @@ module Agents
 
       `mode`:`documents` returns all documents of the collection, `status` returns the status of the collection
 
-      `merge` set to true to retain the received payload and update it with the extracted result
+      #{common_nif_agent_fields_description}
     MD
 
     def default_options
@@ -32,7 +32,7 @@ module Agents
     form_configurable :url
     form_configurable :collection_name
     form_configurable :mode, type: :array, values: ['documents', 'status']
-    form_configurable :merge, type: :boolean
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?

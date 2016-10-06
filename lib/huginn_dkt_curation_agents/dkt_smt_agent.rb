@@ -32,7 +32,7 @@ module Agents
           Spanish to English
           English to Spanish
 
-      `merge` set to true to retain the received payload and update it with the extracted result
+      #{common_nif_agent_fields_description}
     MD
 
     def default_options
@@ -51,7 +51,7 @@ module Agents
     form_configurable :outformat, type: :array, values: ['turtle', 'json-ld', 'n3', 'n-triples', 'rdf-xml', 'text/html']
     form_configurable :source_lang, type: :array, values: ['en','de', 'es']
     form_configurable :target_lang, type: :array, values: ['en','de', 'es']
-    form_configurable :merge, type: :boolean
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?

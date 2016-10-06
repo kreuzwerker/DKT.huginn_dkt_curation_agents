@@ -27,7 +27,7 @@ module Agents
 
         `algorithm`: the algorithm to be used during clustering. Currently EM and Kmeans are supported.
 
-        `merge` set to true to retain the received payload and update it with the extracted result
+        #{common_nif_agent_fields_description}
 
         **When receiving a file pointer:**
 
@@ -50,7 +50,7 @@ module Agents
     form_configurable :body, type: :text
     form_configurable :language, type: :array, values: ['en','de']
     form_configurable :algorithm, type: :array, values: ['em', 'kmeans']
-    form_configurable :merge, type: :boolean
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?

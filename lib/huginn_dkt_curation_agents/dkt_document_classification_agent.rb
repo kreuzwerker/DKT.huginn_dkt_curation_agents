@@ -36,7 +36,7 @@ module Agents
 
       `modelPath` [optional] this parameter is only used is other location for models is used inside the server. This parameter has been meant for local installation of the service.
 
-      `merge` set to true to retain the received payload and update it with the extracted result
+      #{common_nif_agent_fields_description}
     MD
 
     def default_options
@@ -58,7 +58,7 @@ module Agents
     form_configurable :language, type: :array, values: ['de']
     form_configurable :modelName, type: :array, values: ['3pc', 'condat_types', 'condat_categories', 'kreuzwerker_categories', 'kreuzwerker_subcategories', 'kreuzwerker_topics']
     form_configurable :modelPath
-    form_configurable :merge, type: :boolean
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?

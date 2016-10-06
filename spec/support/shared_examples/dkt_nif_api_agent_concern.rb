@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 shared_examples_for DktNifApiAgentConcern do
+  it 'renders the description wihtout errors' do
+    expect { @checker.description }.not_to raise_error
+  end
+
   it "event description does not throw an exception" do
     expect(@checker.event_description).to include('body')
   end

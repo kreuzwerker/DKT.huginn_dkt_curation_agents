@@ -27,7 +27,7 @@ module Agents
 
         `algorithm`: the algorithm to be used during clustering. Currently EM and Kmeans are supported.
 
-        #{common_nif_agent_fields_description}
+        #{self.class.common_nif_agent_fields_description}
 
         **When receiving a file pointer:**
 

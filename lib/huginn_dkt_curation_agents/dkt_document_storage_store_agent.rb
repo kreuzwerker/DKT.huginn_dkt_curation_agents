@@ -25,7 +25,7 @@ module Agents
 
         `file_name` Name of the file uploaded.
 
-        #{common_nif_agent_fields_description}
+        #{self.class.common_nif_agent_fields_description}
 
         **When receiving a file pointer:**
 

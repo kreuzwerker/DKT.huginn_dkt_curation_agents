@@ -27,6 +27,8 @@ module Agents
 
         `algorithm`: the algorithm to be used during clustering. Currently EM and Kmeans are supported.
 
+        #{self.class.common_nif_agent_fields_description}
+
         **When receiving a file pointer:**
 
         `body` will be ignored and the contents of the received file will be send instead.
@@ -48,6 +50,7 @@ module Agents
     form_configurable :body, type: :text
     form_configurable :language, type: :array, values: ['en','de']
     form_configurable :algorithm, type: :array, values: ['em', 'kmeans']
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -63,7 +66,7 @@ module Agents
           mo['body'] = io
         end
 
-        nif_request!(mo, ['language', 'algorithm'], mo['url'], parse_response: :json)
+        nif_request!(mo, ['language', 'algorithm'], mo['url'], parse_response: :json, event: event)
       end
     end
   end

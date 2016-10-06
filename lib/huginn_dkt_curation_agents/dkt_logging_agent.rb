@@ -36,6 +36,8 @@ module Agents
       `errorType`: the type of the error has not been defined for now, but it can be something like: BadRequestException, EmptyInputArgument, etc.
 
       `additionalInformation`: additional text associated with the interaction.
+
+      #{common_nif_agent_fields_description}
     MD
 
     def default_options
@@ -58,6 +60,7 @@ module Agents
     form_configurable :errorId
     form_configurable :errorType
     form_configurable :additionalInformation
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -73,7 +76,7 @@ module Agents
           request.params.update(mo.except('url'))
         end
 
-        create_event payload: { body: response.body, headers: response.headers, status: response.status }
+        create_nif_event!(mo, event, body: response.body, headers: response.headers, status: response.status)
       end
     end
   end

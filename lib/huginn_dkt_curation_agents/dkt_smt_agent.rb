@@ -31,6 +31,8 @@ module Agents
           English to German
           Spanish to English
           English to Spanish
+
+      #{common_nif_agent_fields_description}
     MD
 
     def default_options
@@ -49,6 +51,7 @@ module Agents
     form_configurable :outformat, type: :array, values: ['turtle', 'json-ld', 'n3', 'n-triples', 'rdf-xml', 'text/html']
     form_configurable :source_lang, type: :array, values: ['en','de', 'es']
     form_configurable :target_lang, type: :array, values: ['en','de', 'es']
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -60,7 +63,7 @@ module Agents
       incoming_events.each do |event|
         mo = interpolated(event)
 
-        nif_request!(mo, ['target_lang', 'source_lang'], mo['url'])
+        nif_request!(mo, ['target_lang', 'source_lang'], mo['url'], event: event)
       end
     end
   end

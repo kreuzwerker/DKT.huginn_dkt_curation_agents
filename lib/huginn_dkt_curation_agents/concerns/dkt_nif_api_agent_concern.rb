@@ -1,6 +1,21 @@
 module DktNifApiAgentConcern
   extend ActiveSupport::Concern
 
+  module ClassMethods
+    def common_nif_agent_fields
+      form_configurable :merge, type: :boolean
+      form_configurable :result_key
+    end
+
+    def common_nif_agent_fields_description
+      Utils.unindent <<-MD
+        `merge` set to `true` to retain the received payload and update it with the extracted result
+
+        `result_key` when present the emitted Event data will be nested inside the specified key
+      MD
+    end
+  end
+
   included do
     can_dry_run!
 
@@ -49,6 +64,13 @@ module DktNifApiAgentConcern
              response.body
            end
 
-    create_event payload: { body: body, headers: response.headers, status: response.status }
+    create_nif_event!(mo, options[:event], body: body, headers: response.headers, status: response.status)
+  end
+
+  def create_nif_event!(mo, event, payload)
+    original_payload = boolify(mo['merge']) ? event.payload : {}
+    payload = {mo['result_key'] => payload} if mo['result_key'].present?
+
+    create_event payload: original_payload.merge(payload)
   end
 end

@@ -33,6 +33,7 @@ module Agents
 
       `modelPath` [optional] this parameter is only used is other location for models is used inside the server. This parameter has been meant for local installation of the service.
 
+      #{common_nif_agent_fields_description}
     MD
 
     def default_options
@@ -54,6 +55,7 @@ module Agents
     form_configurable :language, type: :array, values: ['en','de']
     form_configurable :modelName, type: :array, values: ['3pc', 'concat', 'kreuzwerker']
     form_configurable :modelPath
+    common_nif_agent_fields
 
     def validate_options
       errors.add(:base, "url needs to be present") if options['url'].blank?
@@ -65,7 +67,7 @@ module Agents
       incoming_events.each do |event|
         mo = interpolated(event)
 
-        nif_request!(mo, ['outformat', 'modelName', 'input', 'informat', 'modelPath', 'language'], mo['url'])
+        nif_request!(mo, ['outformat', 'modelName', 'input', 'informat', 'modelPath', 'language'], mo['url'], event: event)
       end
     end
   end

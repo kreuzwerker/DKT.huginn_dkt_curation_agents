@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = "huginn_dkt_curation_agents"
-  spec.version       = '0.2'
+  spec.version       = '0.3'
   spec.authors       = ["Dominik Sander"]
   spec.email         = ["git@dsander.de"]
 
